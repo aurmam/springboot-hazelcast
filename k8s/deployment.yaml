@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scheduler-deployment
+  labels:
+    app: scheduler-app
+spec:
+  replicas: 2 # Running multiple replicas to test leader election
+  selector:
+    matchLabels:
+      app: scheduler-app
+  template:
+    metadata:
+      labels:
+        app: scheduler-app
+    spec:
+      serviceAccountName: scheduler-sa
+      containers:
+      - name: scheduler
+        image: localhost/scheduler:local
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          name: web
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "k8s"
+        # Database Connections - Should be populated via Secrets in real prod
+        - name: JDBC_URL
+          value: "jdbc:postgresql://postgres-service:5432/scheduler_db"
+        - name: JDBC_USERNAME
+          value: "scheduler_user"
+        - name: JDBC_PASSWORD
+          value: "secret"
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10

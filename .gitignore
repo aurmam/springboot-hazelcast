@@ -1,0 +1,23 @@
+# Gradle
+.gradle/
+build/
+out/
+
+# Java / IDEs
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+*.class
+*.log
+.DS_Store
+
+# Wrapper
+!gradle/wrapper/gradle-wrapper.jar
+
+# Project specific artifacts
+scheduler.tar
+*.jar
+!gradle/wrapper/gradle-wrapper.jar

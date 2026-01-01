@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: springboot-hazelcast-scheduler
+  jackson:
+    serialization:
+      indent_output: true
+  datasource:
+    # Example Postgres config, strictly for demonstration. 
+    # In production, these should be supplied via Environment Variables from Secrets.
+    url: ${JDBC_URL:jdbc:postgresql://localhost:5432/scheduler_db}
+    username: ${JDBC_USERNAME:scheduler_user}
+    password: ${JDBC_PASSWORD:secret}
+    driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      mode: always # Initialize schema if it doesn't exist (good for demo/dev)
+
+logging:
+  level:
+    com.example.scheduler: DEBUG
+    org.springframework.jdbc: INFO
+    net.javacrumbs.shedlock: INFO
