@@ -41,5 +41,19 @@ kubectl apply -f k8s/deployment.yaml --context kind-scheduler-cluster
 echo "Done! Application deployed."
 echo "Check status:"
 echo "  kubectl get pods --context kind-scheduler-cluster"
+
 echo "View logs:"
 echo "  kubectl logs -l app=scheduler-app -f --context kind-scheduler-cluster"
+
+echo "Rollback:"
+echo "  kubectl rollout restart deployment/scheduler-deployment --context kind-scheduler-cluster
+
+echo "Forward port:"
+echo "  kubectl port-forward deployment/scheduler-deployment 8080:8080 --context kind-scheduler-cluster"
+
+echo "Access API:"
+echo "  http://localhost:8080/api/scheduler/locks"
+echo "  http://localhost:8080/api/scheduler/history"
+
+echo "Replica logs:"
+echo "  kubectl logs -f scheduler-deployment-5fdfb58689-whqqq --context kind-scheduler-cluster"
