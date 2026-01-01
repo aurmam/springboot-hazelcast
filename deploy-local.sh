@@ -46,7 +46,7 @@ echo "View logs:"
 echo "  kubectl logs -l app=scheduler-app -f --context kind-scheduler-cluster"
 
 echo "Rollback:"
-echo "  kubectl rollout restart deployment/scheduler-deployment --context kind-scheduler-cluster
+echo "  kubectl rollout restart deployment/scheduler-deployment --context kind-scheduler-cluster"
 
 echo "Forward port:"
 echo "  kubectl port-forward deployment/scheduler-deployment 8080:8080 --context kind-scheduler-cluster"
