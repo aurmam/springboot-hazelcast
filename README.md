@@ -64,6 +64,63 @@ You will see logs from *only one* pod executing the task:
 ```
 The other pod will remain silent for the scheduled task key.
 
+## Monitoring & Observability
+
+This application exposes REST APIs to monitor the state of the locks and the history of executed jobs.
+
+### 1. View Active Locks
+Check which pods currently hold the lock for any scheduled task.
+
+```bash
+GET /api/scheduler/locks
+```
+
+**Response Example:**
+```json
+[
+  {
+    "name": "ClusterAwareScheduledTask_run",
+    "lockUntil": "2026-01-01T10:00:30",
+    "lockedAt": "2026-01-01T10:00:00",
+    "lockedBy": "scheduler-deployment-xyz-123"
+  }
+]
+```
+
+### 2. View Job History
+Audit the execution history of all scheduled tasks (Start Time, End Time, Status, Node).
+
+```bash
+GET /api/scheduler/history
+```
+
+**Response Example:**
+```json
+[
+  {
+    "id": 1,
+    "jobName": "OneMinuteTask",
+    "startTime": "2026-01-01T10:00:00",
+    "endTime": "2026-01-01T10:00:01",
+    "status": "SUCCESS",
+    "executedBy": "scheduler-deployment-xyz-123",
+    "errorMessage": null
+  }
+]
+```
+
+### How to Access Locally
+Since the pods are in a private cluster network, use `kubectl port-forward` to access them:
+
+```bash
+# Forward local port 8080 to the application
+kubectl port-forward deployment/scheduler-deployment 8080:8080 --context kind-scheduler-cluster
+
+# Open in browser
+http://localhost:8080/api/scheduler/locks
+http://localhost:8080/api/scheduler/history
+```
+
 ## Manual Configuration Details
 
 ### Environment Variables
@@ -86,6 +143,16 @@ CREATE TABLE IF NOT EXISTS shedlock (
     locked_at TIMESTAMP NOT NULL,
     locked_by VARCHAR(255) NOT NULL,
     PRIMARY KEY (name)
+);
+
+CREATE TABLE IF NOT EXISTS job_history (
+    id SERIAL PRIMARY KEY,
+    job_name VARCHAR(255) NOT NULL,
+    start_time TIMESTAMP NOT NULL,
+    end_time TIMESTAMP,
+    status VARCHAR(50) NOT NULL,
+    executed_by VARCHAR(255) NOT NULL,
+    error_message TEXT
 );
 ```
 
