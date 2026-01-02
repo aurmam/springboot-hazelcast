@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import com.example.scheduler.service.JobHistoryService;
 
 import java.time.LocalDateTime;
 
@@ -12,9 +13,9 @@ import java.time.LocalDateTime;
 public class ClusterAwareScheduledTask {
 
     private static final Logger logger = LoggerFactory.getLogger(ClusterAwareScheduledTask.class);
-    private final com.example.scheduler.service.JobHistoryService jobHistoryService;
+    private final JobHistoryService jobHistoryService;
 
-    public ClusterAwareScheduledTask(com.example.scheduler.service.JobHistoryService jobHistoryService) {
+    public ClusterAwareScheduledTask(JobHistoryService jobHistoryService) {
         this.jobHistoryService = jobHistoryService;
     }
 

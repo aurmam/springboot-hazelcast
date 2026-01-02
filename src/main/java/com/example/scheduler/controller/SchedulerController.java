@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.example.scheduler.repository.JobHistoryRepository;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -15,10 +16,10 @@ public class SchedulerController {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final com.example.scheduler.repository.JobHistoryRepository jobHistoryRepository;
+    private final JobHistoryRepository jobHistoryRepository;
 
     public SchedulerController(JdbcTemplate jdbcTemplate,
-            com.example.scheduler.repository.JobHistoryRepository jobHistoryRepository) {
+            JobHistoryRepository jobHistoryRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.jobHistoryRepository = jobHistoryRepository;
     }
